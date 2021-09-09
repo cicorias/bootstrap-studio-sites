@@ -1,5 +1,7 @@
 const express = require("express");
-const https = require('htts');
+const https = require('https');
+const fs = require('fs');
+
 const port = process.env.NODE_PORT || 3000;
 
 const app = express();
@@ -17,11 +19,11 @@ let sslOptions = {
     cert: fs.readFileSync('/etc/letsencrypt/live/njit.cicoria.com/fullchain.pem')
  };
 
-let serverHttps = https.createServer(sslOptions, app).listen(443)
+// let serverHttps = https.createServer(sslOptions, app).listen(443)
 
-const server = app.listen(port, function(){
-    var port = server.address().port;
-    console.log("Server started at http://localhost:%s", port);
-});
+const server = https.createServer(sslOptions, app).listen(port, function(){
+    console.log("Express server listening on port " + port);
+  });
+
 
 // pm2 start server.js --name
